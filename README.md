@@ -1,54 +1,84 @@
-# TweetX - MERN-Based Social Media Platform
+# Postly - MERN-Based Social Media Platform
 
-## Project Overview
-TweetX is a full-stack social media platform developed using the MERN stack. This project was built to enhance knowledge and experience in modern web development. It offers a smooth and interactive user experience, allowing users to create, engage, and manage content efficiently.
+## Overview
+Postly is a full-stack social media platform built with the **MERN stack** (MongoDB, Express.js, React, Node.js). Designed to deliver a seamless and interactive user experience, Postly enables users to create, share, and engage with content efficiently. This project serves as a practical exploration of modern web development, focusing on scalable architecture and user-centric features.
 
 ## Key Features
-### User Authentication
+
+### 🔒 User Authentication
 - Secure registration, login, and logout functionality.
-- JWT-based authentication to ensure data security.
+- JWT-based authentication for enhanced data security.
 
-### Tweeting System
-- Users can create tweets with text and images.
-- Users can delete their own tweets.
-- Real-time updates on the timeline.
+### 📝 Tweeting System
+- Create tweets with text and image support.
+- Delete personal tweets with user-specific permissions.
+- Real-time timeline updates for a dynamic experience.
 
-### Engagement & Interaction
-- Users can like and bookmark tweets.
-- Commenting system to engage in discussions.
-- Only the owner can delete their own tweets.
+### 💬 Engagement & Interaction
+- Like and bookmark tweets for personalized content curation.
+- Commenting system to foster discussions.
+- Restricted tweet deletion to post owners only.
 
-### Following System
-- Users can follow and unfollow other users.
-- Followed users' tweets appear in the timeline.
+### 👥 Following System
+- Follow and unfollow other users to customize your network.
+- View followed users' tweets in a personalized timeline.
 
-### Profile Management
-- Users can edit their profile details.
-- View other users' profiles and their tweets.
+### 🖼️ Profile Management
+- Edit profile details to personalize your presence.
+- Explore other users' profiles and their tweet history.
 
-### Additional Features
+### 🚀 Additional Features
 - Personalized timeline based on followed users.
-- Interactive UI with smooth navigation.
+- Responsive and intuitive UI for smooth navigation.
 - Optimized for performance and scalability.
 
+## Tech Stack
+- **Frontend**: React, Tailwind CSS
+- **Backend**: Node.js, Express.js
+- **Database**: MongoDB
+- **Authentication**: JSON Web Tokens (JWT)
+- **Deployment**: Render
+
 ## Deployment
-TweetX is fully deployed on **Render**, ensuring smooth performance and accessibility.
+Postly is deployed on **Render** for reliable performance and accessibility.
 
-**Live Project Link:** [Your Deployment Link Here]
+**Live Project Link**: [Insert Deployment Link Here]
 
-## Project Screenshots
-![image](https://github.com/user-attachments/assets/a6962b0e-46c6-40fe-afb0-f75040e5dd50)
-![image](https://github.com/user-attachments/assets/fa2c39ff-7c4a-4855-86dd-44ba29d2e983)
-![Screenshot 2025-02-21 160533](https://github.com/user-attachments/assets/1f2bb6fb-925b-4dd9-b23f-1bf5d6cb659b)
+## Screenshots
+![Postly Screenshot](https://github.com/user-attachments/assets/f241a001-4ad5-4cb7-995e-ffb2774004fd)
 
+## Installation
+To run Postly locally, follow these steps:
 
-## Purpose of the Project
-This project was built to gain hands-on experience in full-stack development, user authentication, and scalable application design. The goal is to enhance technical skills and explore real-world development challenges.
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/your-username/postly.git
+   cd postly
 
-## Future Enhancements
-- Implement real-time notifications.
-- Improve UI/UX with animations and transitions.
-- Optimize backend for better scalability.
+2. **Install dependencies**:
+   ```bash
+   # Backend dependencies
+   - cd server
+   - npm install
 
-TweetX is a modern, scalable, and interactive social media platform designed to strengthen practical full-stack development skills.
+   # Frontend dependencies
+   - cd ../client
+   - npm install
+
+3. **Set up environment variables: Create a .env file in the server directory with the following**:
+   ```bash
+    - MONGO_URI=your_mongodb_connection_string
+    - JWT_SECRET=your_jwt_secret_key
+
+4. **Run the application**:
+   ```bash
+   # Start the backend server
+   - cd server
+   - npm run dev
+
+   # Start the frontend development server
+   - cd ../client
+   - npm start
+
+5. Access Postly at http://localhost:3000.
 
