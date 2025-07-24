@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Auth from '../../public/assets/auth.png';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -93,7 +92,7 @@ const Login = () => {
           animate={{ x: 0 }}
           className="mb-8 md:mb-0"
         >
-          <img src={Auth} alt="twitter logo" className="w-20 md:w-[250px] mx-auto" />
+          <img src='/assets/auth.png' alt="twitter logo" className="w-20 md:w-[250px] mx-auto" />
         </motion.div>
         <motion.div
           initial={{ x: 100 }}
