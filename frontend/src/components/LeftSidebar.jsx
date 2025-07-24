@@ -84,11 +84,9 @@ const LeftSidebar = ({ sidebarOpen, setSidebarOpen }) => {
     [user?._id, logoutHandler]
   );
 
-  // Responsive sidebar: hidden on mobile unless toggled, always visible on md+
-  // Backdrop for mobile drawer
+  
   return (
     <>
-      {/* Backdrop for mobile drawer */}
       <div
         className={`fixed inset-0 bg-black bg-opacity-40 z-40 transition-opacity duration-200 md:hidden ${
           sidebarOpen ? 'block' : 'hidden'
