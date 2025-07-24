@@ -1,4 +1,4 @@
-<!-- # Postly - MERN-Based Social Media Platform
+# Postly - MERN-Based Social Media Platform
 
 ## Overview
 
@@ -112,116 +112,18 @@ Postly was developed to gain hands-on experience in:
 - Full-stack development with the MERN stack.
 - Implementing secure user authentication.
 - Designing scalable and interactive web applications.
-- Tackling real-world development challenges. -->
+- Tackling real-world development challenges.
 
-Postly - MERN-Based Social Media Platform
-Overview
-Postly is a full-stack social media platform built with the MERN stack (MongoDB, Express.js, React, Node.js). Designed to deliver a seamless and interactive user experience, Postly enables users to create, share, and engage with content efficiently. This project serves as a practical exploration of modern web development, focusing on scalable architecture and user-centric features.
-Key Features
-🔒 User Authentication
+## Contributing
 
-Secure registration, login, and logout functionality.
-JWT-based authentication for enhanced data security.
-
-📝 Tweeting System
-
-Create tweets with text and image support.
-Delete personal tweets with user-specific permissions.
-Real-time timeline updates for a dynamic experience.
-
-💬 Engagement & Interaction
-
-Like and bookmark tweets for personalized content curation.
-Commenting system to foster discussions.
-Restricted tweet deletion to post owners only.
-
-👥 Following System
-
-Follow and unfollow other users to customize your network.
-View followed users' tweets in a personalized timeline.
-
-🖼️ Profile Management
-
-Edit profile details to personalize your presence.
-Explore other users' profiles and their tweet history.
-
-🚀 Additional Features
-
-Personalized timeline based on followed users.
-Responsive and intuitive UI for smooth navigation.
-Optimized for performance and scalability.
-
-Tech Stack
-
-Frontend: React, Tailwind CSS
-Backend: Node.js, Express.js
-Database: MongoDB
-Authentication: JSON Web Tokens (JWT)
-Deployment: Render
-
-Deployment
-Postly is deployed on Render for reliable performance and accessibility.
-Live Project Link: [Insert Deployment Link Here]
-Screenshots
-
-Installation
-To run Postly locally, follow these steps:
-
-Clone the repository:
-git clone https://github.com/your-username/postly.git
-cd postly
-
-
-Install dependencies:
-# Backend dependencies
-cd server
-npm install
-
-# Frontend dependencies
-cd ../client
-npm install
-
-
-Set up environment variables:Create a .env file in the server directory with the following:
-MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret_key
-
-
-Run the application:
-# Start backend
-cd server
-npm start
-
-# Start frontend (in a new terminal)
-cd client
-npm start
-
-
-Access Postly at http://localhost:3000.
-
-
-Purpose
-Postly was developed to gain hands-on experience in:
-
-Full-stack development with the MERN stack.
-Implementing secure user authentication.
-Designing scalable and interactive web applications.
-Tackling real-world development challenges.
-
-Future Enhancements
-
-Add real-time notifications for user interactions.
-Enhance UI/UX with animations and transitions.
-Optimize backend performance for larger-scale deployments.
-
-Contributing
 Contributions are welcome! To contribute:
 
-Fork the repository.
-Create a feature branch (git checkout -b feature/your-feature).
-Commit your changes (git commit -m "Add your feature").
-Push to the branch (git push origin feature/your-feature).
-Open a pull request.
+1. Fork the repository.
+2. Create a feature branch (git checkout -b feature/your-feature).
+3. Commit your changes (git commit -m "Add your feature").
+4. Push to the branch (git push origin feature/your-feature).
+5. Open a pull request.
 
-License
+## License
+
 This project is licensed under the MIT License.
