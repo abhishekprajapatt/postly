@@ -56,6 +56,7 @@ Postly is deployed on **Render** for reliable performance and accessibility.
 ## Screenshots
 
 ![Postly Screenshot](https://github.com/user-attachments/assets/f241a001-4ad5-4cb7-995e-ffb2774004fd)
+![Postly Screenshot](https://github.com/user-attachments/assets/2025-07-24%20231417.png)
 
 ## Installation
 
