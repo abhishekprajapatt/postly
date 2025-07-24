@@ -74,11 +74,11 @@ To run Postly locally, follow these steps:
 
    ```bash
    # Backend dependencies
-   - cd server
+   - cd backend
    - npm install
 
    # Frontend dependencies
-   - cd ../client
+   - cd ../frontend
    - npm install
 
    ```
