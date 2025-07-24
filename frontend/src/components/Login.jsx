@@ -9,6 +9,7 @@ import { motion } from 'framer-motion';
 
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
+  const [seePassword, setSeePassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const { user } = useSelector((store) => store?.user);
   const navigate = useNavigate();
@@ -92,14 +93,20 @@ const Login = () => {
           animate={{ x: 0 }}
           className="mb-8 md:mb-0"
         >
-          <img src='/assets/auth.png' alt="twitter logo" className="w-20 md:w-[250px] mx-auto" />
+          <img
+            src="/assets/auth.png"
+            alt="twitter logo"
+            className="w-20 md:w-[250px] mx-auto"
+          />
         </motion.div>
         <motion.div
           initial={{ x: 100 }}
           animate={{ x: 0 }}
           className="w-full md:w-[400px] border border-gray-600 rounded-xl p-8 shadow-md shadow-gray-600"
         >
-          <h1 className="font-bold text-3xl md:text-5xl text-foreground mb-5">Happening now</h1>
+          <h1 className="font-bold text-3xl md:text-5xl text-foreground mb-5">
+            Happening now
+          </h1>
           <h2 className="font-bold text-xl text-secondary-foreground mb-4">
             {isLogin ? 'Login' : 'Signup'}
           </h2>
@@ -132,14 +139,25 @@ const Login = () => {
               placeholder="Enter Your Email"
               className="focus:outline-none focus:ring-0 p-2 bg-input bg-black/60 shadow-sm shadow-gray-600 border-border border-gray-600 rounded-full text-foreground"
             />
-            <input
-              type="password"
-              name="password"
-              value={input.password}
-              onChange={changeEventHandler}
-              placeholder="Enter Your Password"
-              className="focus:outline-none focus:ring-0 p-2 bg-input bg-black/60 shadow-sm shadow-gray-600 border-border border-gray-600 rounded-full text-foreground"
-            />
+            <div className="relative">
+              <input
+                type={seePassword ? "text" : "password"}
+                name="password"
+                value={input.password}
+                onChange={changeEventHandler}
+                placeholder="Enter Your Password"
+                className="w-full pr-10 focus:outline-none focus:ring-0 p-2 bg-input bg-black/60 shadow-sm shadow-gray-600 border border-gray-600 rounded-full text-foreground"
+              />
+              <img
+                onClick={() => {
+                  setSeePassword(!seePassword);
+                }}
+                src={`/assets/${seePassword ? 'open' : 'close'}.png`}
+                alt="toggle visibility"
+                className="w-4 h-4 absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer"
+              />
+            </div>
+
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
