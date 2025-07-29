@@ -108,7 +108,7 @@ const LeftSidebar = ({ sidebarOpen, setSidebarOpen }) => {
             <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center">
               <Twitter className="w-6 h-6 text-white" />
             </div>
-            <span className="text-xl font-bold gradient-text">Social</span>
+            <span className="text-xl font-bold gradient-text">Postly</span>
           </motion.div>
 
           {/* Navigation */}
