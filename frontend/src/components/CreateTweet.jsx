@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import Avatar from 'react-avatar';
-import { Image, Smile, MapPin, Calendar, Send } from 'lucide-react';
+import { Image, Smile, MapPin, Calendar, Send, X } from 'lucide-react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
-import { getIsActive, getRefresh } from '@/redux/tweetSlice';
-import { motion } from 'framer-motion';
+import { setIsActive, tweetRefresh } from '@/redux/tweetSlice';
+import { AnimatePresence, motion } from 'framer-motion';
 
 const CreateTweet = () => {
   const [description, setDescription] = useState('');
@@ -44,7 +44,7 @@ const CreateTweet = () => {
       );
 
       if (res.data.success) {
-        dispatch(getRefresh());
+        dispatch(tweetRefresh());
         toast.success(res.data.message);
       }
     } catch (error) {
@@ -65,154 +65,172 @@ const CreateTweet = () => {
   };
 
   const activeYouHandler = () => {
-    dispatch(getIsActive(true));
+    dispatch(setIsActive(true));
   };
 
   const activeFollowingHandler = () => {
-    dispatch(getIsActive(false));
+    dispatch(setIsActive(false));
   };
 
   const isDisabled = !description.trim();
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
+      className="sticky top-0 z-30 backdrop-blur-md bg-slate-900/80 border-b border-slate-600"
     >
-      <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }} className="fixed top-0 left-[17.5%] right-[33.5%] flex items-center justify-between border-b border-border bg-black">
+      {/* Tab Navigation */}
+      <div className="flex">
         <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+          whileHover={{ backgroundColor: 'rgba(51, 65, 85, 0.5)' }}
+          whileTap={{ scale: 0.98 }}
           onClick={activeYouHandler}
-          className={`w-full text-center p-4 font-bold text-foreground text-xl ${
-            isActive ? 'border-b-4 border-blue-600' : ''
-          } hover:bg-secondary/50 transition-colors`}
+          className={`flex-1 text-center p-4 font-semibold transition-all ${
+            isActive
+              ? 'text-white border-b-2 border-blue-500'
+              : 'text-slate-400 hover:text-slate-300'
+          }`}
         >
           For You
         </motion.button>
         <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+          whileHover={{ backgroundColor: 'rgba(51, 65, 85, 0.5)' }}
+          whileTap={{ scale: 0.98 }}
           onClick={activeFollowingHandler}
-          className={`w-full text-center p-4 font-bold text-foreground text-xl ${
-            !isActive ? 'border-b-4 border-blue-600' : ''
-          } hover:bg-secondary/50 transition-colors`}
+          className={`flex-1 text-center p-4 font-semibold transition-all ${
+            !isActive
+              ? 'text-white border-b-2 border-blue-500'
+              : 'text-slate-400 hover:text-slate-300'
+          }`}
         >
           Following
         </motion.button>
-      </motion.div>
-      <div className="mt-[14%] flex space-x-4 bg-black/40 rounded-xl shadow-md shadow-gray-700 border border-gray-600 p-6 mb-6">
-        <Avatar
-          src={
-            user?.avatar ||
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9dEhbjgmjNQc_JAJJYvv4waAPpHilh4Ps8A&s'
-          }
-          size="50"
-          round={true}
-        />
+      </div>
 
-        <div className="flex-1">
-          <textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            onKeyDown={handleKeyDown}
-            placeholder="What's happening?"
-            className="w-full resize-none bg-black border-none outline-none text-xl placeholder-gray-500 min-h-[120px]"
-            maxLength={280}
+      {/* Create Tweet Form */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="p-6 border-b border-slate-600"
+      >
+        <div className="flex space-x-4">
+          <Avatar
+            src={
+              user?.avatar ||
+              `${import.meta.env.DEFAULT_PROFILE_IMAGE}`
+            }
+            size="48"
+            round
+            className="border-2 border-blue-500"
           />
 
-          {preview && (
-            <div className="mt-4 relative">
-              <img
-                src={preview}
-                alt="Preview"
-                className="w-full max-h-64 object-cover rounded-xl"
-              />
-              <button
-                type="button"
-                onClick={() => {
-                  setImage(null);
-                  setPreview(null);
-                }}
-                className="absolute top-2 right-2 w-8 h-8 bg-black/40 bg-opacity-75 text-white rounded-full flex items-center justify-center hover:bg-opacity-100 transition-colors"
-              >
-                ×
-              </button>
-            </div>
-          )}
+          <div className="flex-1">
+            <textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder="What's happening?"
+              className="w-full resize-none bg-transparent border-none outline-none text-xl placeholder-slate-400 min-h-[80px] text-white"
+              maxLength={280}
+            />
 
-          <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-600">
-            <div className="flex items-center space-x-4">
-              {/* Image Upload */}
-              <label
-                htmlFor="image-upload"
-                className="p-2 text-blue-500 hover:bg-blue-50 rounded-full transition-colors cursor-pointer"
-                title="Add photo"
-              >
-                <Image size={20} />
-              </label>
-              <input
-                id="image-upload"
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-                className="hidden"
-              />
+            <AnimatePresence>
+              {preview && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  className="mt-4 relative"
+                >
+                  <img
+                    src={preview}
+                    alt="Preview"
+                    className="w-full max-h-64 object-cover rounded-2xl border border-slate-600"
+                  />
+                  <motion.button
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    onClick={() => {
+                      setImage(null);
+                      setPreview(null);
+                    }}
+                    className="absolute top-3 right-3 w-8 h-8 bg-slate-900/80 backdrop-blur-sm text-white rounded-full flex items-center justify-center hover:bg-slate-800 transition-colors"
+                  >
+                    <X size={16} />
+                  </motion.button>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
-              {/* Just Icons for UI */}
-              <button
-                type="button"
-                className="p-2 text-blue-500 hover:bg-blue-50 rounded-full transition-colors"
-                title="Add emoji"
-              >
-                <Smile size={20} />
-              </button>
-              <button
-                type="button"
-                className="p-2 text-blue-500 hover:bg-blue-50 rounded-full transition-colors"
-                title="Add location"
-              >
-                <MapPin size={20} />
-              </button>
-              <button
-                type="button"
-                className="p-2 text-blue-500 hover:bg-blue-50 rounded-full transition-colors"
-                title="Schedule"
-              >
-                <Calendar size={20} />
-              </button>
-            </div>
+            <div className="flex items-center justify-between mt-4">
+              <div className="flex items-center space-x-4">
+                {/* Image Upload */}
+                <motion.label
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  htmlFor="image-upload"
+                  className="p-2 text-blue-400 hover:bg-blue-400/10 rounded-full transition-colors cursor-pointer"
+                  title="Add photo"
+                >
+                  <Image size={20} />
+                </motion.label>
+                <input
+                  id="image-upload"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="hidden"
+                />
 
-            <div className="flex items-center space-x-4">
-              <span
-                className={`text-sm ${
-                  description.length > 260 ? 'text-red-500' : 'text-gray-500'
-                }`}
-              >
-                {280 - description.length}
-              </span>
-              <button
-                onClick={submitHandler}
-                disabled={isDisabled}
-                className={`px-6 py-2 rounded-full font-semibold transition-colors ${
-                  isDisabled
-                    ? 'bg-gray-800 text-gray-400 cursor-not-allowed'
-                    : 'bg-blue-500 text-white hover:bg-blue-600'
-                }`}
-              >
-                <div className="flex items-center gap-2">
-                  Post
-                  <Send size={16} />
-                </div>
-              </button>
+                {/* Other Action Buttons */}
+                {[
+                  { icon: Smile, title: 'Add emoji' },
+                  { icon: MapPin, title: 'Add location' },
+                  { icon: Calendar, title: 'Schedule' },
+                ].map((action, index) => (
+                  <motion.button
+                    key={index}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    type="button"
+                    className="p-2 text-blue-400 hover:bg-blue-400/10 rounded-full transition-colors"
+                    title={action.title}
+                  >
+                    <action.icon size={20} />
+                  </motion.button>
+                ))}
+              </div>
+
+              <div className="flex items-center space-x-4">
+                <span
+                  className={`text-sm font-medium ${
+                    description.length > 260 ? 'text-red-400' : 'text-slate-400'
+                  }`}
+                >
+                  {280 - description.length}
+                </span>
+                <motion.button
+                  whileHover={{ scale: isDisabled ? 1 : 1.05 }}
+                  whileTap={{ scale: isDisabled ? 1 : 0.95 }}
+                  onClick={submitHandler}
+                  disabled={isDisabled}
+                  className={`px-6 py-2 rounded-full font-semibold transition-all ${
+                    isDisabled
+                      ? 'bg-slate-700 text-slate-500 cursor-not-allowed'
+                      : 'bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700'
+                  }`}
+                >
+                  <div className="flex items-center gap-2">
+                    Post
+                    <Send size={16} />
+                  </div>
+                </motion.button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
     </motion.div>
   );
 };

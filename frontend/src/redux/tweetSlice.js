@@ -1,22 +1,32 @@
 import { createSlice } from '@reduxjs/toolkit';
+
+// Initial state
+const initialState = {
+  tweets: [],
+  refresh: false,
+  isActive: true,
+};
+
+// Create tweet slice
 const tweetSlice = createSlice({
   name: 'tweet',
-  initialState: {
-    tweets: null,
-    refresh:false,
-    isActive:true,
-  },
+  initialState,
   reducers: {
+    // Get all tweets
     getAllTweets: (state, action) => {
-      state.tweets = action.payload;
+      state.tweets = action.payload || [];
     },
-    getRefresh:(state) => {
-        state.refresh = !state.refresh;
+    // Toggle refresh state
+    tweetRefresh: (state) => {
+      state.refresh = !state.refresh;
     },
-    getIsActive:(state, action) => {
-        state.isActive = action.payload;
-    }
+    // Set active status
+    tweetIsActive: (state, action) => {
+      state.isActive = !!action.payload;
+    },
   },
 });
-export const { getAllTweets, getRefresh, getIsActive } = tweetSlice.actions;
+
+// Export actions and reducer
+export const { getAllTweets, tweetRefresh, setIsActive } = tweetSlice.actions;
 export default tweetSlice.reducer;

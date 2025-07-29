@@ -11,27 +11,33 @@ const Feed = () => {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="flex-1 border-x w-auto border-border border-gray-600 lg:overflow-y-auto lg:h-screen px-1 sm:px-2 md:px-4"
+      className="flex-1 border-x border-slate-600 min-h-screen"
     >
       <CreateTweet />
 
-      <div className="space-y-6 mb-[4%]">
-        {tweets?.map((tweet) => (
-          <Tweet
+      <div className="space-y-0">
+        {tweets?.map((tweet, index) => (
+          <motion.div
             key={tweet._id}
-            tweet={tweet}
-            // onLike={onLike}
-            // onShare={onShare}
-          />
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.1 }}
+          >
+            <Tweet tweet={tweet} key={tweet._id} />
+          </motion.div>
         ))}
       </div>
 
-      {tweets?.length === 0 && (
-        <div className="text-center py-12">
-          <p className="text-gray-500 text-lg">
-            No posts yet. Be the first to share something!
-          </p>
-        </div>
+      {(!tweets || tweets?.length === 0) && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="text-center py-16"
+        >
+          <div className="w-24 h-24 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4"></div>
+          <p className="text-xl text-slate-400 mb-2">No posts yet</p>
+          <p className="text-slate-500">Be the first to share something!</p>
+        </motion.div>
       )}
     </motion.div>
   );

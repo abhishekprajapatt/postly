@@ -1,405 +1,118 @@
-// import React, { useState } from 'react';
-// import {
-//   ArrowLeft,
-//   BookMarked,
-//   MessageSquareMore,
-//   ThumbsUp,
-// } from 'lucide-react';
-// import { useNavigate, useParams } from 'react-router-dom';
-// import Avatar from 'react-avatar';
-// import { useDispatch, useSelector } from 'react-redux';
-// import useGetUserProfile from '@/hooks/useGetUserProfile';
-// import toast from 'react-hot-toast';
-// import { getfollowingUpdate } from '@/redux/userSlice';
-// import axios from 'axios';
-// import { getRefresh } from '@/redux/tweetSlice';
-// import EditProfile from './EditProfile';
-// import { MdDeleteForever } from 'react-icons/md';
-
-// const Profile = () => {
-//   const navigate = useNavigate();
-//   const dispatch = useDispatch();
-//   const { id } = useParams();
-//   const [editOpen, setEditOpen] = useState(false);
-//   const { user, profile } = useSelector((store) => store.user);
-//   const { tweets } = useSelector((store) => store?.tweet);
-//   const userTweets = tweets?.filter((tweet) => tweet.user?._id === user?.id);
-//   useGetUserProfile(id);
-//   const followOrUnfollowHandler = async () => {
-//     if (user?.following?.includes(id)) {
-//       try {
-//         const res = await axios.post(
-//           `${import.meta.env.VITE_BACKEND_URL}/api/v1/user/unfollow/${id}`,
-//           { id: user?._id },
-//           {
-//             headers: {
-//               'Content-Type': 'application/json',
-//             },
-//             withCredentials: true,
-//           }
-//         );
-//         if (res?.data?.success) {
-//           dispatch(getfollowingUpdate(id));
-//           dispatch(getRefresh());
-//           toast?.success(res?.data?.message);
-//         }
-//       } catch (error) {
-//         console.log(error);
-//         toast.error(error.response.data.message);
-//       }
-//     } else {
-//       try {
-//         const res = await axios.post(
-//           `${import.meta.env.VITE_BACKEND_URL}/api/v1/user/follow/${id}`,
-//           { id: user?._id },
-//           {
-//             headers: {
-//               'Content-Type': 'application/json',
-//             },
-//             withCredentials: true,
-//           }
-//         );
-//         if (res?.data?.success) {
-//           dispatch(getfollowingUpdate(id));
-//           dispatch(getRefresh());
-//           toast?.success(res?.data?.message);
-//         }
-//       } catch (error) {
-//         console.log(error);
-//         toast.error(error.response.data.message);
-//       }
-//     }
-//   };
-
-//   const EditOpen = () => {
-//     setEditOpen(!editOpen);
-//   };
-
-//   const likeOrDislikeHandler = async (id) => {
-//     try {
-//       const res = await axios.put(
-//         `${import.meta.env.VITE_BACKEND_URL}/api/v1/tweet/like/${id}`,
-//         { id: user?._id },
-//         {
-//           headers: {
-//             'Content-Type': 'application/json',
-//           },
-//           withCredentials: true,
-//         }
-//       );
-//       if (res.data.success) {
-//         dispatch(getRefresh());
-//         toast.success(res.data.message);
-//       }
-//     } catch (error) {
-//       console.log(error);
-//       toast.error(error.response.data.message);
-//     }
-//   };
-
-//   const deleteTweetHandler = async (id) => {
-//     try {
-//       const res = await axios.delete(
-//         `${import.meta.env.VITE_BACKEND_URL}/api/v1/tweet/delete/${id}`,
-//         {
-//           headers: { 'Content-Type': 'application/json' },
-//           withCredentials: true,
-//         }
-//       );
-//       if (res.data.success) {
-//         dispatch(getRefresh());
-//         toast.success(res.data.message);
-//       }
-//     } catch (error) {
-//       console.log(error);
-//       toast.error(error.response.data.message);
-//     }
-//   };
-
-//   function timeSince(timestamp) {
-//     let time = Date.parse(timestamp);
-//     let now = Date.now();
-//     let secondsPast = (now - time) / 1000;
-//     let suffix = 'ago';
-
-//     let intervals = {
-//       year: 31536000,
-//       month: 2592000,
-//       week: 604800,
-//       day: 86400,
-//       hour: 3600,
-//       minute: 60,
-//       second: 1,
-//     };
-
-//     for (let i in intervals) {
-//       let interval = intervals[i];
-//       if (secondsPast >= interval) {
-//         let count = Math.floor(secondsPast / interval);
-//         return `${count} ${i} ${count > 1 ? 's' : ''} ${suffix}`;
-//       }
-//     }
-//   }
-//   return (
-//     <div className="md:w-[50%] w-full border-l border-r border-gray-200 mt-[-2rem] mb-12">
-//       <div>
-//         <div className="flex items-center py-2">
-//           <div className="p-2 rounded-full hover:bg-gray-100 hover:cursor-pointer">
-//             <ArrowLeft onClick={() => navigate('/')} />
-//           </div>
-//           <div className="ml-2">
-//             <h className="font-bold text-lg">{profile?.name || 'username'}</h>
-//             <p className="text-gray-500 text-sm">{'20 posts'}</p>
-//           </div>
-//         </div>
-//         <img
-//           src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9dEhbjgmjNQc_JAJJYvv4waAPpHilh4Ps8A&s"
-//           alt="banner"
-//           className="w-full h-[8rem] md:h-[14rem]"
-//         />
-//         <div className="relative -top-20 ml-2 border- border-white rounded-full">
-//           <Avatar
-//             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9dEhbjgmjNQc_JAJJYvv4waAPpHilh4Ps8A&s"
-//             className=""
-//             round={true}
-//           />
-//           <div className="flex m-4">
-//             <div className="w-[20rem] mx-2">
-//               <div className="">
-//                 <h1 className="font-bold text-xl">{profile?.name}</h1>
-//                 <p className="">{`@${profile?.username}`}</p>
-//               </div>
-//               <p className="text-sm md:w-[20rem]">
-//                 Lorem ipsum dolor sit amet consectetur adipisicing elit.
-//                 Adipisci, soluta!
-//               </p>
-//             </div>
-//             <div className="text-right">
-//               {profile?._id === user?._id ? (
-//                 <button
-//                   onClick={() => EditOpen(true)}
-//                   className="px-4 py-1 rounded-full border border-gray-400 text-xs"
-//                 >
-//                   Edit Profile
-//                 </button>
-//               ) : (
-//                 <button
-//                   onClick={followOrUnfollowHandler}
-//                   className="px-4 py-1 rounded-full border text-white bg-gray-800 hover:bg-gray-700 border-gray-400"
-//                 >
-//                   {user?.following?.includes(id) ? 'following' : 'follow'}
-//                 </button>
-//               )}
-//             </div>
-//           </div>
-//         </div>
-//         <div className="mt-[-4rem]">
-//           {userTweets?.map(
-//             ({
-//               _id,
-//               userDetails,
-//               description,
-//               image,
-//               like,
-//               comment,
-//               bookmarks,
-//               createdAt,
-//               userId,
-//             }) => (
-//               <div key={_id} className="border-t border-gray-200 p-4">
-//                 <div className="flex">
-//                   <Avatar
-//                     src={
-//                       userDetails?.[0]?.profilePic ||
-//                       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9dEhbjgmjNQc_JAJJYvv4waAPpHilh4Ps8A&s'
-//                     }
-//                     size="50"
-//                     round={true}
-//                   />
-//                   <div className="ml-3 w-full">
-//                     {/* User Info */}
-//                     <div className="flex items-center">
-//                       <h1 className="font-bold">{userDetails?.[0]?.name}</h1>
-//                       <p className="text-gray-500 text-sm ml-2">
-//                         @{userDetails?.[0]?.username} · {timeSince(createdAt)}
-//                       </p>
-//                     </div>
-//                     <div className="my-3">
-//                       <p>{description}</p>
-//                     </div>
-//                     {image && (
-//                       <img
-//                         className="w-full rounded-2xl"
-//                         src={image}
-//                         alt="Tweet"
-//                       />
-//                     )}
-//                     <div className="flex items-center justify-between mt-4">
-//                       <div className="flex gap-2 items-center">
-//                         <div
-//                           onClick={() => likeOrDislikeHandler(_id)}
-//                           className={`cursor-pointer p-2 hover:bg-blue-200 rounded-full ${
-//                             like?.length ? 'bg-blue-300' : ''
-//                           }`}
-//                         >
-//                           <ThumbsUp size={'25px'} />
-//                         </div>
-//                         <p>{like?.length || 0}</p>
-//                       </div>
-//                       <div className="flex gap-2 items-center">
-//                         <div className="cursor-pointer p-2 hover:bg-blue-200 rounded-full">
-//                           <MessageSquareMore size={'25px'} />
-//                         </div>
-//                         <p>{comment?.length || 0}</p>
-//                       </div>
-//                       <div className="flex gap-2 items-center">
-//                         <div className="cursor-pointer p-2 hover:bg-green-200 rounded-full">
-//                           <BookMarked size={'25px'} />
-//                         </div>
-//                         <p>{bookmarks?.length || 0}</p>
-//                       </div>
-//                       {user?._id === userId && (
-//                         <div
-//                           onClick={() => deleteTweetHandler(_id)}
-//                           className="flex gap-2 items-center cursor-pointer p-2 hover:bg-red-200 rounded-full"
-//                         >
-//                           <MdDeleteForever size={'25px'} />
-//                         </div>
-//                       )}
-//                     </div>
-//                   </div>
-//                 </div>
-//               </div>
-//             )
-//           )}
-//         </div>
-//       </div>
-
-//       {editOpen && <EditProfile />}
-//     </div>
-//   );
-// };
-
-// export default Profile;
-
-
-// new
-import React, { useState } from 'react';
-import { ArrowLeft, BookMarked, MessageSquareMore, ThumbsUp } from 'lucide-react';
+import React, { useState, useCallback, useMemo } from 'react';
+import { ArrowLeft, Calendar, Edit3 } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
-import Avatar from 'react-avatar';
 import { useDispatch, useSelector } from 'react-redux';
-import useGetUserProfile from '@/hooks/useGetUserProfile';
-import toast from 'react-hot-toast';
-import { getfollowingUpdate } from '@/redux/userSlice';
-import axios from 'axios';
-import { getRefresh } from '@/redux/tweetSlice';
-import EditProfile from './EditProfile';
-import { MdDeleteForever } from 'react-icons/md';
 import { motion } from 'framer-motion';
 import { gsap } from 'gsap';
+import toast from 'react-hot-toast';
+import axios from 'axios';
+import Avatar from 'react-avatar';
+
+import useGetUserProfile from '@/hooks/useGetUserProfile';
+import { getToggleFollowing } from '@/redux/userSlice';
+import { tweetRefresh } from '@/redux/tweetSlice';
+import EditProfile from './EditProfile';
+import Tweet from './Tweet';
+import Followers from './Followers';
+import Following from './Following';
+
+// Constants
+const DEFAULT_PROFILE_IMAGE = 'https://avatar.iran.liara.run/public';
+const DEFAULT_BANNER_IMAGE = 'https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?w=1200&h=400&fit=crop';
+
+// Animation variants
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 0.3 } },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: (index) => ({ opacity: 1, y: 0, transition: { delay: index * 0.1 } }),
+};
 
 const Profile = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { id } = useParams();
   const [editOpen, setEditOpen] = useState(false);
-  const { user, profile } = useSelector((store) => store.user);
-  const { tweets } = useSelector((store) => store.tweet);
-  const userTweets = tweets?.filter((tweet) => tweet.userId === id);
+  const [followersExpanded, setFollowersExpanded] = useState(false);
+  const [followingExpanded, setFollowingExpanded] = useState(false);
+
+  const { user, profile } = useSelector((store) => store.user || {});
+  const { tweets } = useSelector((store) => store.tweet || {});
+  const userTweets = useMemo(() => tweets?.filter((tweet) => tweet.userId === id) || [], [tweets, id]);
+
   useGetUserProfile(id);
 
-  const followOrUnfollowHandler = async () => {
-    if (profile?.isPrivate) {
-      try {
-        const res = await axios.post(
-          `${import.meta.env.VITE_BACKEND_URL}/api/v1/user/followrequest/${id}`,
-          { id: user?._id },
-          {
-            headers: { 'Content-Type': 'application/json' },
-            withCredentials: true,
-          }
-        );
-        if (res?.data?.success) {
-          toast.success('Follow request sent');
-        }
-      } catch (error) {
-        toast.error(error.response.data.message);
-      }
-    } else {
-      try {
-        const res = await axios.post(
-          user?.following?.includes(id)
-            ? `${import.meta.env.VITE_BACKEND_URL}/api/v1/user/unfollow/${id}`
-            : `${import.meta.env.VITE_BACKEND_URL}/api/v1/user/follow/${id}`,
-          { id: user?._id },
-          {
-            headers: { 'Content-Type': 'application/json' },
-            withCredentials: true,
-          }
-        );
-        if (res?.data?.success) {
-          dispatch(getfollowingUpdate(id));
-          dispatch(getRefresh());
-          toast.success(res?.data?.message);
-        }
-      } catch (error) {
-        toast.error(error.response.data.message);
-      }
-    }
-  };
+  const isOwnProfile = user?._id === id;
+  const isFollowing = user?.following?.includes(id);
 
-  const likeOrDislikeHandler = async (id) => {
+  const followOrUnfollowHandler = useCallback(async () => {
     try {
-      const res = await axios.put(
-        `${import.meta.env.VITE_BACKEND_URL}/api/v1/tweet/like/${id}`,
+      const endpoint = profile?.isPrivate
+        ? `/user/followrequest/${id}`
+        : isFollowing
+        ? `/user/unfollow/${id}`
+        : `/user/follow/${id}`;
+      const res = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1${endpoint}`,
         { id: user?._id },
-        {
-          headers: { 'Content-Type': 'application/json' },
-          withCredentials: true,
-        }
+        { headers: { 'Content-Type': 'application/json' }, withCredentials: true }
       );
       if (res.data.success) {
-        dispatch(getRefresh());
-        toast.success(res.data.message);
-      }
-    } catch (error) {
-      toast.error(error.response.data.message);
-    }
-  };
-
-  const deleteTweetHandler = async (id) => {
-    try {
-      const res = await axios.delete(
-        `${import.meta.env.VITE_BACKEND_URL}/api/v1/tweet/delete/${id}`,
-        {
-          headers: { 'Content-Type': 'application/json' },
-          withCredentials: true,
+        if (!profile?.isPrivate) {
+          dispatch(getToggleFollowing(id));
+          dispatch(tweetRefresh());
         }
-      );
-      if (res.data.success) {
-        dispatch(getRefresh());
-        toast.success(res.data.message);
+        toast.success(res.data.message || 'Follow status updated');
       }
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(error.response?.data?.message || 'Failed to update follow status');
     }
-  };
+  }, [id, user?._id, profile?.isPrivate, isFollowing, dispatch]);
 
-  const handleFollowerClick = () => {
-    gsap.to('.followers-list', { height: 'auto', duration: 0.3 });
-  };
+  const likeOrDislikeHandler = useCallback(
+    async (tweetId) => {
+      try {
+        const res = await axios.put(
+          `${import.meta.env.VITE_BACKEND_URL}/api/v1/tweet/like/${tweetId}`,
+          { id: user?._id },
+          { headers: { 'Content-Type': 'application/json' }, withCredentials: true }
+        );
+        if (res.data.success) {
+          dispatch(tweetRefresh());
+          toast.success(res.data.message || 'Like updated');
+        }
+      } catch (error) {
+        toast.error(error.response?.data?.message || 'Failed to like/unlike tweet');
+      }
+    },
+    [user?._id, dispatch]
+  );
 
-  const handleFollowingClick = () => {
-    gsap.to('.following-list', { height: 'auto', duration: 0.3 });
-  };
+  const deleteTweetHandler = useCallback(
+    async (tweetId) => {
+      try {
+        const res = await axios.delete(
+          `${import.meta.env.VITE_BACKEND_URL}/api/v1/tweet/delete/${tweetId}`,
+          { headers: { 'Content-Type': 'application/json' }, withCredentials: true }
+        );
+        if (res.data.success) {
+          dispatch(tweetRefresh());
+          toast.success(res.data.message || 'Tweet deleted');
+        }
+      } catch (error) {
+        toast.error(error.response?.data?.message || 'Failed to delete tweet');
+      }
+    },
+    [dispatch]
+  );
 
-  function timeSince(timestamp) {
-    let time = Date.parse(timestamp);
-    let now = Date.now();
-    let secondsPast = (now - time) / 1000;
-    let suffix = 'ago';
-    let intervals = {
+  const timeSince = useCallback((timestamp) => {
+    if (!timestamp) return 'Just now';
+    const secondsPast = (Date.now() - Date.parse(timestamp)) / 1000;
+    const intervals = {
       year: 31536000,
       month: 2592000,
       week: 604800,
@@ -408,178 +121,242 @@ const Profile = () => {
       minute: 60,
       second: 1,
     };
-    for (let i in intervals) {
-      let interval = intervals[i];
-      if (secondsPast >= interval) {
-        let count = Math.floor(secondsPast / interval);
-        return `${count} ${i} ${count > 1 ? 's' : ''} ${suffix}`;
+    for (const [unit, seconds] of Object.entries(intervals)) {
+      if (secondsPast >= seconds) {
+        const count = Math.floor(secondsPast / seconds);
+        return `${count} ${unit}${count > 1 ? 's' : ''} ago`;
       }
     }
-  }
+    return 'Just now';
+  }, []);
 
-  const canViewProfile = profile?.isPrivate
-    ? user?._id === id || user?.following?.includes(id)
-    : true;
+  const canViewProfile = !profile?.isPrivate || isOwnProfile || isFollowing;
+
+  const toggleFollowersFollowing = useCallback(
+    (type) => {
+      const isFollowers = type === 'followers';
+      const element = isFollowers ? '.followers-list' : '.following-list';
+      const isExpanded = isFollowers ? followersExpanded : followingExpanded;
+      if (isFollowers) setFollowersExpanded((prev) => !prev);
+      else setFollowingExpanded((prev) => !prev);
+      gsap.to(element, {
+        height: isExpanded ? 0 : 'auto',
+        opacity: isExpanded ? 0 : 1,
+        duration: 0.3,
+      });
+    },
+    [followersExpanded, followingExpanded]
+  );
 
   return (
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="w-full md:w-[50%] border-x border-border"
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      className="flex-1 border-x border-slate-600"
     >
-      <div className="p-4">
-        <div className="flex items-center">
-          <motion.div
+      {/* Header */}
+      <header className="sticky top-0 z-20 backdrop-blur-md bg-slate-900/80 border-b border-slate-600 p-4">
+        <div className="flex items-center gap-4">
+          <motion.button
             whileHover={{ scale: 1.1 }}
-            className="p-2 rounded-full hover:bg-secondary/50 cursor-pointer"
-            onClick={() => navigate('/')}
+            whileTap={{ scale: 0.9 }}
+            className="p-2 rounded-full hover:bg-slate-800"
+            onClick={() => navigate(-1)}
+            aria-label="Go back"
           >
-            <ArrowLeft />
-          </motion.div>
-          <div className="ml-4">
-            <h1 className="font-bold text-xl text-foreground">{profile?.name || 'username'}</h1>
-            <p className="text-secondary-foreground text-sm">{userTweets?.length || 0} posts</p>
+            <ArrowLeft className="w-5 h-5 text-white" />
+          </motion.button>
+          <div>
+            <h1 className="text-xl font-bold text-white">{profile?.name || 'User'}</h1>
+            <p className="text-sm text-slate-400">{userTweets.length} posts</p>
           </div>
         </div>
-        <img
-          src={profile?.bannerPicture || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9dEhbjgmjNQc_JAJJYvv4waAPpHilh4Ps8A&s'}
-          alt="banner"
-          className="w-full h-[8rem] md:h-[14rem] object-cover rounded-lg"
-        />
-        <div className="relative -top-16 ml-4">
-          <Avatar
-            src={profile?.profilePicture || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9dEhbjgmjNQc_JAJJYvv4waAPpHilh4Ps8A&s'}
-            size="100"
-            round={true}
-            className="border-4 border-background"
+      </header>
+
+      {/* Profile Section */}
+      <div className="relative">
+        <div className="h-48 md:h-64 relative overflow-hidden">
+          <img
+            src={profile?.bannerPicture || DEFAULT_BANNER_IMAGE}
+            alt={`${profile?.name || 'User'}'s banner`}
+            className="w-full h-full object-cover"
+            loading="lazy"
           />
-          <div className="flex justify-between items-center mt-2">
+          <div className="absolute inset-0 bg-black/20" />
+        </div>
+
+        <div className="px-6 pb-6">
+          <div className="flex justify-between items-start -mt-16 mb-4">
+            <motion.div
+              initial={{ scale: 0.5, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.2 }}
+            >
+              <Avatar
+                src={profile?.profilePicture || DEFAULT_PROFILE_IMAGE}
+                size="128"
+                round
+                alt={`${profile?.name || 'User'}'s avatar`}
+                className="border-4 overflow-hidden border-slate-900 bg-slate-900"
+              />
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.3 }}
+              className="mt-16"
+            >
+              {isOwnProfile ? (
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setEditOpen(true)}
+                  className="px-6 py-2 border border-slate-500 text-white rounded-full hover:bg-slate-800 flex items-center gap-2"
+                  aria-label="Edit profile"
+                >
+                  <Edit3 size={16} />
+                  Edit Profile
+                </motion.button>
+              ) : (
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={followOrUnfollowHandler}
+                  className={`px-6 py-2 rounded-full font-semibold transition-all ${
+                    isFollowing
+                      ? 'bg-slate-700 text-white hover:bg-red-600 border border-slate-600'
+                      : 'bg-blue-500 text-white hover:bg-blue-600'
+                  }`}
+                  aria-label={isFollowing ? `Unfollow ${profile?.name}` : profile?.isPrivate ? `Request to follow ${profile?.name}` : `Follow ${profile?.name}`}
+                >
+                  {isFollowing
+                    ? 'Following'
+                    : profile?.isPrivate
+                    ? 'Request'
+                    : 'Follow'}
+                </motion.button>
+              )}
+            </motion.div>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="space-y-4"
+          >
             <div>
-              <h1 className="font-bold text-xl text-foreground">{profile?.name}</h1>
-              <p className="text-secondary-foreground">@{profile?.username}</p>
-              <p className="text-sm text-foreground mt-2">{profile?.bio}</p>
-              <div className="flex gap-4 mt-2">
-                <button onClick={handleFollowerClick} className="text-secondary-foreground">
-                  {profile?.followers?.length || 0} Followers
-                </button>
-                <button onClick={handleFollowingClick} className="text-secondary-foreground">
-                  {profile?.following?.length || 0} Following
-                </button>
+              <h1 className="text-2xl font-bold text-white">{profile?.name || 'User'}</h1>
+              <p className="text-slate-400">@{profile?.username || 'username'}</p>
+            </div>
+
+            {profile?.bio && <p className="text-white leading-relaxed">{profile.bio}</p>}
+
+            <div className="flex items-center gap-6 text-slate-400 text-sm">
+              <div className="flex items-center gap-1">
+                <Calendar size={16} />
+                <span>Joined {profile?.joinDate || 'Unknown'}</span>
               </div>
             </div>
-            {profile?._id === user?._id ? (
+
+            <div className="flex items-center gap-6">
               <motion.button
                 whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setEditOpen(true)}
-                className="px-4 py-1 rounded-full border border-border text-foreground"
+                onClick={() => toggleFollowersFollowing('following')}
+                className="text-white hover:underline"
+                aria-label="View following"
               >
-                Edit Profile
+                <span className="font-bold">{profile?.following?.length || 0}</span>
+                <span className="text-slate-400 ml-1">Following</span>
               </motion.button>
-            ) : (
               <motion.button
                 whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={followOrUnfollowHandler}
-                className="px-4 py-1 rounded-full bg-primary text-primary-foreground"
+                onClick={() => toggleFollowersFollowing('followers')}
+                className="text-white hover:underline"
+                aria-label="View followers"
               >
-                {user?.following?.includes(id) ? 'Following' : profile?.isPrivate ? 'Request to Follow' : 'Follow'}
+                <span className="font-bold">{profile?.followers?.length || 0}</span>
+                <span className="text-slate-400 ml-1">Followers</span>
               </motion.button>
-            )}
-          </div>
-          <div className="followers-list h-0 overflow-hidden">
-            {profile?.followers?.map((followerId) => (
-              <div key={followerId} className="flex items-center gap-2 p-2" onClick={() => navigate(`/profile/${followerId}`)}>
-                <Avatar size="40" round={true} />
-                <p className="text-foreground">User {followerId}</p>
-              </div>
-            ))}
-          </div>
-          <div className="following-list h-0 overflow-hidden">
-            {profile?.following?.map((followingId) => (
-              <div key={followingId} className="flex items-center gap-2 p-2" onClick={() => navigate(`/profile/${followingId}`)}>
-                <Avatar size="40" round={true} />
-                <p className="text-foreground">User {followingId}</p>
-              </div>
-            ))}
+            </div>
+
+            {/* Followers List */}
+            <div className="followers-list h-0 overflow-hidden opacity-0">
+              <Followers profileId={id} isOwnProfile={isOwnProfile} onClose={() => setFollowersExpanded(false)} toggleFollowersFollowing={toggleFollowersFollowing} />
+            </div>
+
+            {/* Following List */}
+            <div className="following-list h-0 overflow-hidden opacity-0">
+              <Following profileId={id} isOwnProfile={isOwnProfile} onClose={() => setFollowingExpanded(false)} toggleFollowersFollowing={toggleFollowersFollowing} />
+            </div>
+          </motion.div>
+        </div>
+      </div>
+
+      {/* Posts Section */}
+      <div className="border-t border-slate-600">
+        <div className="sticky top-[73px] backdrop-blur-md bg-slate-900/80 border-b border-slate-600">
+          <div className="flex">
+            <button className="flex-1 p-4 text-center font-semibold text-white border-b-2 border-blue-500">
+              Posts
+            </button>
+            <button className="flex-1 p-4 text-center font-semibold text-slate-400 hover:text-slate-300">
+              Replies
+            </button>
+            <button className="flex-1 p-4 text-center font-semibold text-slate-400 hover:text-slate-300">
+              Media
+            </button>
           </div>
         </div>
-        {editOpen && <EditProfile user={profile} onUpdate={() => setEditOpen(false)} />}
+
         {canViewProfile ? (
-          <div className="mt-4">
-            {userTweets?.map((tweet) => (
-              <div key={tweet._id} className="border-t border-border p-4">
-                <div className="flex">
-                  <Avatar
-                    src={profile?.profilePicture || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9dEhbjgmjNQc_JAJJYvv4waAPpHilh4Ps8A&s'}
-                    size="50"
-                    round={true}
-                  />
-                  <div className="ml-3 w-full">
-                    <div className="flex items-center">
-                      <h1 className="font-bold text-foreground">{profile?.name}</h1>
-                      <p className="text-secondary-foreground text-sm ml-2">
-                        @{profile?.username} · {timeSince(tweet.createdAt)}
-                      </p>
-                    </div>
-                    <div className="my-3">
-                      <p>{tweet.description}</p>
-                    </div>
-                    {tweet.image && (
-                      <img
-                        className="w-full rounded-2xl"
-                        src={tweet.image}
-                        alt="Tweet"
-                      />
-                    )}
-                    <div className="flex items-center justify-between mt-4">
-                      <div className="flex gap-2 items-center">
-                        <motion.div
-                          whileHover={{ scale: 1.1 }}
-                          onClick={() => likeOrDislikeHandler(tweet._id)}
-                          className={`cursor-pointer p-2 hover:bg-primary/20 rounded-full ${tweet.like?.includes(user?._id) ? 'bg-primary/30' : ''}`}
-                        >
-                          <ThumbsUp size={25} />
-                        </motion.div>
-                        <p>{tweet.like?.length || 0}</p>
-                      </div>
-                      <div className="flex gap-2 items-center">
-                        <motion.div
-                          whileHover={{ scale: 1.1 }}
-                          className="cursor-pointer p-2 hover:bg-primary/20 rounded-full"
-                        >
-                          <MessageSquareMore size={25} />
-                        </motion.div>
-                        <p>{tweet.comment?.length || 0}</p>
-                      </div>
-                      <div className="flex gap-2 items-center">
-                        <motion.div
-                          whileHover={{ scale: 1.1 }}
-                          className="cursor-pointer p-2 hover:bg-green-200 rounded-full"
-                        >
-                          <BookMarked size={25} />
-                        </motion.div>
-                        <p>{tweet.bookmarks?.length || 0}</p>
-                      </div>
-                      {user?._id === tweet.userId && (
-                        <motion.div
-                          whileHover={{ scale: 1.1 }}
-                          onClick={() => deleteTweetHandler(tweet._id)}
-                          className="cursor-pointer p-2 hover:bg-red-200 rounded-full"
-                        >
-                          <MdDeleteForever size={25} />
-                        </motion.div>
-                      )}
-                    </div>
-                  </div>
-                </div>
+          userTweets.length > 0 ? (
+            userTweets.map((tweet, index) => (
+              <motion.div
+                key={tweet._id}
+                custom={index}
+                variants={itemVariants}
+                initial="hidden"
+                animate="visible"
+              >
+                <Tweet
+                  tweet={tweet}
+                  onLike={likeOrDislikeHandler}
+                  onDelete={deleteTweetHandler}
+                  timeSince={timeSince}
+                />
+              </motion.div>
+            ))
+          ) : (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="text-center py-16"
+            >
+              <div className="w-24 h-24 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Edit3 className="w-12 h-12 text-slate-400" />
               </div>
-            ))}
-          </div>
+              <p className="text-xl text-slate-400 mb-2">No posts yet</p>
+              <p className="text-slate-500">
+                {isOwnProfile ? 'Share your first thought!' : "This user hasn't posted anything yet."}
+              </p>
+            </motion.div>
+          )
         ) : (
-          <p className="text-center text-secondary-foreground mt-4">This profile is private.</p>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-center py-16"
+          >
+            <p className="text-xl text-slate-400">This profile is private</p>
+            <p className="text-slate-500">Follow to see their posts</p>
+          </motion.div>
         )}
       </div>
+
+      {editOpen && <EditProfile user={profile} onClose={() => setEditOpen(false)} />}
     </motion.div>
   );
 };
