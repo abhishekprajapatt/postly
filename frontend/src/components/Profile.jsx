@@ -194,7 +194,7 @@ const Profile = () => {
               transition={{ delay: 0.2 }}
             >
               <Avatar
-                src={profile?.profilePicture || DEFAULT_PROFILE_IMAGE}
+                src={profile?.profilePicture || 'https://avatar.iran.liara.run/public'}
                 size="128"
                 round
                 alt={`${profile?.name || 'User'}'s avatar`}

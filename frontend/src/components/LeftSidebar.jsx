@@ -21,7 +21,7 @@ const navItemsConfig = [
   {
     icon: (user) => (
       <Avatar
-        src={user?.avatar || `${import.meta.env.DEFAULT_PROFILE_IMAGE}`}
+        src={user?.avatar || 'https://avatar.iran.liara.run/public'||`${import.meta.env.DEFAULT_PROFILE_IMAGE}`}
         size="40"
         round
         className="border border-white/20 shadow-xl shadow-black/40"
@@ -155,7 +155,7 @@ const LeftSidebar = ({ sidebarOpen, setSidebarOpen }) => {
               <div className="flex items-center gap-3">
                 <Avatar
                   src={
-                    user.avatar ||
+                    user.avatar || 'https://avatar.iran.liara.run/public' ||
                     `${import.meta.env.DEFAULT_PROFILE_IMAGE}`
                   }
                   size="48"

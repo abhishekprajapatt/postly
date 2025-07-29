@@ -180,7 +180,7 @@ const SearchResults = ({ users = [] }) => {
                         aria-label={`View ${user.name || 'user'}'s profile`}
                       >
                         <Avatar
-                          src={user.profilePicture || DEFAULT_PROFILE_IMAGE}
+                          src={user.profilePicture || 'https://avatar.iran.liara.run/public'}
                           size="48"
                           round
                           alt={`${user.name || 'User'}'s avatar`}

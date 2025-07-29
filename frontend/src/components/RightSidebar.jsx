@@ -179,7 +179,7 @@ const RightSidebar = () => {
                     aria-label={`View ${user.name}'s profile`}
                   >
                     <Avatar
-                      src={user?.profilePicture || `${import.meta.env.DEFAULT_PROFILE_IMAGE}.png`}
+                      src={user?.profilePicture || 'https://avatar.iran.liara.run/public'}
                       size="48"
                       round
                       alt={`${user.name}'s avatar`}

@@ -104,7 +104,7 @@ const Following = ({ profileId, isOwnProfile, onClose,setFollowingExpanded, togg
               <div className="flex items-center gap-3">
                 <Avatar
                   src={`${
-                    import.meta.env.VITE_DEFAULT_PROFILE_IMAGE
+                    'https://avatar.iran.liara.run/public'
                   }?w=40&h=40&fit=crop&crop=face&seed=${followingId}`}
                   size="40"
                   round

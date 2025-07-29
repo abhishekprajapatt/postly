@@ -10,7 +10,7 @@ const TweetComment = ({ comment }) => {
       className="flex items-start gap-2 p-2 border-t border-border"
     >
       <Avatar
-        src={comment?.user?.profilePicture || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9dEhbjgmjNQc_JAJJYvv4waAPpHilh4Ps8A&s'}
+        src={comment?.user?.profilePicture || 'https://avatar.iran.liara.run/public'}
         size="40"
         round={true}
       />

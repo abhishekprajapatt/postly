@@ -169,7 +169,7 @@ const Tweet = ({ tweet = {} }) => {
       <div className="flex items-start space-x-4">
         <motion.img
           whileHover={{ scale: 1.05 }}
-          src={userDetails.profilePicture || `${import.meta.env.DEFAULT_PROFILE_IMAGE}.png`}
+          src={userDetails.profilePicture || 'https://avatar.iran.liara.run/public'}
           alt={userDetails.name || 'User'}
           className="w-12 h-12 rounded-full object-cover border-2 border-slate-600 cursor-pointer"
           loading="lazy"
@@ -351,7 +351,7 @@ const Tweet = ({ tweet = {} }) => {
                     >
                       <img
                         src={
-                          comment.user?.profilePicture || DEFAULT_PROFILE_IMAGE
+                          comment.user?.profilePicture || 'https://avatar.iran.liara.run/public'
                         }
                         alt={comment.user?.name || 'User'}
                         className="w-8 h-8 rounded-full object-cover"

@@ -118,6 +118,7 @@ const CreateTweet = () => {
           <Avatar
             src={
               user?.avatar ||
+              'https://avatar.iran.liara.run/public' ||
               `${import.meta.env.DEFAULT_PROFILE_IMAGE}`
             }
             size="48"
